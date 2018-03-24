@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PruebaFirebase</string>
+    <!-- Strings related to login -->
+    <string name="action_sign_in">Ingresar</string>
+
+
+</resources>
