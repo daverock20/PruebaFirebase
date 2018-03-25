@@ -17,10 +17,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnIniciado,btnCerrado;
-    TextView tvEmail,tvPassword;
-    ProgressBar pbProgreso;
-    FirebaseAuth mAuth;
+    Button btnIniciado,btnCerrado; //Creas los objetos de los botones
+    TextView tvEmail,tvPassword;   //Creas los objetos de los textfield
+    ProgressBar pbProgreso;        //Creas el obejto de la progress bar
+    FirebaseAuth mAuth;            //Creas el objeto para el servicio autentication de firebase
     FirebaseAuth.AuthStateListener listener;
 
     @Override
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //inicializas los objetos con los componentes del xml de diseño ps prro
         btnIniciado = findViewById(R.id.btningresar);
         btnCerrado = findViewById(R.id.btncerrar);
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         pbProgreso.setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
+        //se inicializa el listener este es un escuchador de estado
+        //implementa un metodo que se va a ejecutar cada vez que sucedan cambios, como cuando se logea y cuando cierra la sesion
         listener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -54,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-       // Toast.makeText(this, "Hola mundo" , Toast.LENGTH_LONG).show();
+
         btnIniciado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(),"Ingresando", Toast.LENGTH_LONG).show();
-
+                // Iniciando sesión llamando a Ingresar();
                 Ingresar();
 
             }
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(),"Cerrando Sesión", Toast.LENGTH_LONG).show();
-
+                //Cerrando sesión
                 mAuth.signOut();
 
             }
@@ -76,13 +79,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Ingresar() {
+        //Tomamos los valores de los textfield y los pasamos a variables
         String email = tvEmail.getText().toString();
         String password = tvPassword.getText().toString();
+        //Verificamos si estan llenos los campos
         if(!email.isEmpty() && !password.isEmpty()){
+            //Activamos la barra o circulo de progreso
             pbProgreso.setVisibility(View.VISIBLE);
+            //Entramos al servicio de firebase autentication por medio del objeto mAuth y le pedimos logearnos por email y contraseña
+            //le pasamos las variables email y password con los datos
+            //se añade un escuchador el listenner para cuando esta tarea finalize
            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+               //Se adiere al listenner un Task o un objeto tarea y se crea el metodo onComplete
                @Override
                public void onComplete(@NonNull Task<AuthResult> task) {
+                   //que va a verificar si la tarea se completo o no (es donde se verifican las credenciales )
                    if(task.isSuccessful()){
                        //Toast.makeText(getApplicationContext(), "Correcto", Toast.LENGTH_LONG).show();
                    }else {
